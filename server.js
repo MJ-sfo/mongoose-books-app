@@ -8,7 +8,8 @@
 
 //require express in our app
 var express = require('express'),
-  bodyParser = require('body-parser');
+  bodyParser = require('body-parser');  // two variables defined in one line
+
 
 // generate a new express app and call it 'app'
 var app = express();

@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+//  moved to index.js
 
 var BookSchema = new Schema({
   title: String,
