@@ -1,17 +1,16 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-//  moved to index.js
+var mongoose = require('mongoose'),
+  Schema = mongoose.Schema;
 
 var BookSchema = new Schema({
   title: String,
-  author: String,
+  author: {
+    type: Schema.Types.ObjectId,
+    ref: 'Author'
+  },
   image: String,
-  release_date: String
+  releaseDate: String
 });
 
 var Book = mongoose.model('Book', BookSchema);
 
-
-// to export Book from this module (that's this file)
-// var Book = mongoose.model('Book', BookSchema);
 module.exports = Book;
