@@ -38,7 +38,9 @@ $(document).ready(function(){
     console.log('new characters');
     $.ajax({
       method: 'POST',
-      url: '/api/books/'+$(this).attr('data-id')+'/characters',
+      // url: '/api/books/'+$(this).attr('data-id')+'/characters',
+      url: '/api/books', //  should match url in server.js post
+      // data: $(this).serializeArray(),
       data: $(this).serializeArray(),
       success: newCharacterSuccess,
       error: newCharacterError
@@ -149,4 +151,22 @@ function deleteBookSuccess(json) {
 
 function deleteBookError() {
   console.log('deletebook error!');
+}
+
+// added from solutions
+function newCharacterSuccess(json) {
+  var book = json;
+  var bookId = book._id;
+  // find the book with the correct ID and update it
+  for(var index = 0; index < allBooks.length; index++) {
+    if(allBooks[index]._id === bookId) {
+      allBooks[index] = book;
+      break;  // we found our book - no reason to keep searching (this is why we didn't use forEach)
+    }
+  }
+  render();
+}
+
+function newCharacterError() {
+  console.log('adding new character error!');
 }
