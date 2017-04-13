@@ -35,13 +35,33 @@ $(document).ready(function(){
 
 });
 
+// this is what i started with
+// function getBookHtml(book) {
+//   return `<hr>
+//           <p>
+//             <b>${book.title}</b>
+//             by ${book.author}
+//             <button type="button" name="button" class="deleteBtn btn btn-danger pull-right" data-id=${book._id}>Delete</button>
+//           </p>`;
+// }
+//  this is from solutions
 function getBookHtml(book) {
   return `<hr>
           <p>
             <b>${book.title}</b>
-            by ${book.author}
+            by ${(book.author) ? book.author.name : 'null'}
+            <br>
+            <b>Characters:</b>
+            ${getAllCharactersHtml(book.id, book.characters)}
             <button type="button" name="button" class="deleteBtn btn btn-danger pull-right" data-id=${book._id}>Delete</button>
-          </p>`;
+          </p>
+          <form class="form-inline" id="addCharacterForm" data-id=${book._id}>
+            <div class="form-group">
+              <input type="text" class="form-control" name="name" placeholder="Book character">
+            </div>
+            <button type="submit" class="btn btn-default">Add character</button>
+          </form>
+          `;
 }
 
 function getAllBooksHtml(books) {
