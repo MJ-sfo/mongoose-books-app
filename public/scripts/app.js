@@ -32,11 +32,23 @@ $(document).ready(function(){
       error: deleteBookError
     });
   });
-
-});
+  //  this is from solutions
+  $booksList.on('submit', '#addCharacterForm', function(e) {
+    e.preventDefault();
+    console.log('new characters');
+    $.ajax({
+      method: 'POST',
+      url: '/api/books/'+$(this).attr('data-id')+'/characters',
+      data: $(this).serializeArray(),
+      success: newCharacterSuccess,
+      error: newCharacterError
+    });
+  });
+});  //  ALL $booksList functions need to be within this curly-bracket
 
 // this is what i started with
 // function getBookHtml(book) {
+  // if change ${book.author.name}, makes webpage blank out
 //   return `<hr>
 //           <p>
 //             <b>${book.title}</b>
@@ -44,7 +56,26 @@ $(document).ready(function(){
 //             <button type="button" name="button" class="deleteBtn btn btn-danger pull-right" data-id=${book._id}>Delete</button>
 //           </p>`;
 // }
-//  this is from solutions
+
+
+
+
+// });
+
+function getCharacterHtml(_book_id, character) {
+return `${character.name} <button class="deleteCharacter btn btn-danger" data-bookid=${_book_id} data-charid=${character._id}><b>x</b></button>`;
+}
+
+function getAllCharactersHtml(_book_id, characters) {
+if (characters) {
+  return characters.map(function(character) {
+              return getCharacterHtml(_book_id, character);
+            }).join("");
+} else {
+  return "";
+}
+}
+
 function getBookHtml(book) {
   return `<hr>
           <p>
