@@ -5,6 +5,7 @@
 /////////////////////////////
 //  SETUP and CONFIGURATION
 /////////////////////////////
+var db = require('./models');
 
 //require express in our app
 var express = require('express'),
@@ -23,31 +24,32 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 ////////////////////
 //  DATA
-///////////////////
+// ///////////////////
+// Delete the hard-coded books array. We'll start to replace each route with the correct code to use the database instead. From now on, when we want to get to a book, we'll use mongoose methods and access db.Books.
 
-var books = [
-  {
-    _id: 15,
-    title: "The Four Hour Workweek",
-    author: "Tim Ferriss",
-    image: "https://s3-us-west-2.amazonaws.com/sandboxapi/four_hour_work_week.jpg",
-    release_date: "April 1, 2007"
-  },
-  {
-    _id: 16,
-    title: "Of Mice and Men",
-    author: "John Steinbeck",
-    image: "https://s3-us-west-2.amazonaws.com/sandboxapi/of_mice_and_men.jpg",
-    release_date: "Unknown 1937"
-  },
-  {
-    _id: 17,
-    title: "Romeo and Juliet",
-    author: "William Shakespeare",
-    image: "https://s3-us-west-2.amazonaws.com/sandboxapi/romeo_and_juliet.jpg",
-    release_date: "Unknown 1597"
-  }
-];
+// var books = [
+//   {
+//     _id: 15,
+//     title: "The Four Hour Workweek",
+//     author: "Tim Ferriss",
+//     image: "https://s3-us-west-2.amazonaws.com/sandboxapi/four_hour_work_week.jpg",
+//     release_date: "April 1, 2007"
+//   },
+//   {
+//     _id: 16,
+//     title: "Of Mice and Men",
+//     author: "John Steinbeck",
+//     image: "https://s3-us-west-2.amazonaws.com/sandboxapi/of_mice_and_men.jpg",
+//     release_date: "Unknown 1937"
+//   },
+//   {
+//     _id: 17,
+//     title: "Romeo and Juliet",
+//     author: "William Shakespeare",
+//     image: "https://s3-us-west-2.amazonaws.com/sandboxapi/romeo_and_juliet.jpg",
+//     release_date: "Unknown 1597"
+//   }
+// ];
 
 
 var newBookUUID = 18;
@@ -74,8 +76,17 @@ app.get('/', function (req, res) {
 app.get('/api/books', function (req, res) {
   // send all books as JSON response
   console.log('books index');
-  res.json(books);
-});
+  db.Book.find({}, function(err, books){ // .find needs empty object '{}' to look for all books
+    if (err) {
+      console.log("index error: " + err);
+      res.sendStatus(500);
+    }
+    res.json(books);  //  'books' only has scope up to next bracket
+  })  //  db.Book.find
+  console.log("end result of books:");
+  
+  
+});  //  app.get('/api/books
 
 // get one book
 app.get('/api/books/:id', function (req, res) {
